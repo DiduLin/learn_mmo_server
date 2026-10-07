@@ -21,8 +21,16 @@
 
 ## 第一阶段：项目全景（入门）
 
-- [ ] 1.1 `src/com/yayo/warriors` 下按什么维度分包？是「技术层」还是「业务域」？
-- [ ] 1.2 一个请求从“客户端发包”到“服务端处理”再到“回包”，完整调用链是什么？
+- [X] 1.1 `src/com/yayo/warriors` 下按什么维度分包？是「技术层」还是「业务域」？
+
+warriors 包下的第一层子目录是按照技术层划分为：配置、工具、业务模块、网络、事件等；warriors 下的 module 和 socket 包则是按照不同的业务来划分
+
+- [X] 1.2 一个请求从“客户端发包”到“服务端处理”再到“回包”，完整调用链是什么？
+
+`src/com/yayo/warriors/socket/handle`下的 `BaseHandler` 实类注册了多个 `CMD`对应的 `Invoker` 实现类，每个 `Invoker`实现体对应的 `invoke(IoSession, Request, Response)`方法为对应的请求处理方法。
+
+由于缺少 ``com.yayo.common``相关源码，这里做一个推测：客户端与服务器连接产生一个 socket 对象，socket 对象接收到客户端的请求之后根据规则解析出 `CMD`和请求信息，然后通过 `HandlerManger`查找到对应的 `Handler`并调用对应的 `invoke`方法，然后通过 `Response` 对象回写客户端
+
 - [ ] 1.3 协议是怎么定义的？CMD/Module/Command 如何映射到 Handler？
 - [ ] 1.4 登录流程完整走一遍：账号 → 角色 → 进场景 → 同步周围玩家。
 - [ ] 1.5 玩家对象 `Player / Role / Hero` 的核心字段有哪些？在线状态和离线数据怎么区分？
